@@ -18,24 +18,26 @@ public class PlayerMover : MonoBehaviour
         _input = GetComponent<PlayerInput>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        MovePlayer();
-    }
+        bool isJumping = _input.GetIsJumping();
 
-    private void MovePlayer()
-    {
         if (_characterController.isGrounded)
         {
             _movementDirection = new Vector3(_input.HorizontalInput, 0f, _input.VerticalInput) * _speed;
 
-            if (_input.IsJumping)
+            if (isJumping)
             {
                 _movementDirection.y = _jumpHeight;
             }
         }
+        else
+        {
+            _movementDirection.x = _input.HorizontalInput * _speed;
+            _movementDirection.z = _input.VerticalInput * _speed;
+        }
 
-        _movementDirection.y += Physics.gravity.y * _gravityAmplifier * Time.deltaTime;
-        _characterController.Move(_movementDirection * Time.deltaTime);
+        _movementDirection.y += Physics.gravity.y * _gravityAmplifier * Time.fixedDeltaTime;
+        _characterController.Move(_movementDirection * Time.fixedDeltaTime);
     }
 }

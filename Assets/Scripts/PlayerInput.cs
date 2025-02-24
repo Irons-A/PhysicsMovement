@@ -19,9 +19,16 @@ public class PlayerInput : MonoBehaviour
         {
             IsJumping = true;
         }
-        else
+    }
+
+    public bool GetIsJumping()
+    {
+        if (IsJumping)
         {
             IsJumping = false;
+            return true;
         }
+
+        return false;
     }
 }
